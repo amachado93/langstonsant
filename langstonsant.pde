@@ -14,13 +14,13 @@ int ANTLEFT = 3;
 PImage ant;
 
 void setup() {
-  //size(400, 400);
-  fullScreen();
+  size(400, 400);
+  //fullScreen();
   grid = new int[width][height];
   ant = createImage(width, height, RGB);
   ant.loadPixels();
   for (int i = 0; i < ant.pixels.length; i++){
-    ant.pixels[i] = color(255);
+    ant.pixels[i] = color(50);
   }
   ant.updatePixels();
   x = width/2;
@@ -44,15 +44,22 @@ void turnLeft(){
 }
 
 void moveForward(){
-  if (dir == ANTUP){
-    y--;
-  } else if (dir == ANTRIGHT) {
-    x++;
-  } else if (dir == ANTDOWN) {
-    y++;
-  } else if (dir == ANTLEFT) {
-    x--;
+  
+  switch(dir) {
+    case 0:
+      y--;
+      break;
+    case 1:
+      x++;
+      break;
+    case 2:
+      y++;
+      break;
+    case 3:
+      x--;
+      break;
   }
+  
   
   if (x > width-1){
     x = 0;
@@ -73,28 +80,29 @@ void draw() {
   
   ant.loadPixels();
   for (int n = 0; n < 100; n++){
-  int state = grid[x][y];
-  
-  if (state == 0) {
-    turnRight();
-    grid[x][y] = 1;
-  } else if (state == 1){
-    turnLeft();
-    grid[x][y] = 0;
-  }
-
-  
-  color col = color(255);
-  if (grid[x][y] == 1){
-    col = color(0);
-  }
-  int pix = x + y * ant.width;
-  ant.pixels[pix] = col;
-  moveForward();
+    int state = grid[x][y];
+    
+    switch(state) {
+      case 0: 
+        turnRight();
+        grid[x][y] = 1;
+        break;
+      case 1:
+        turnLeft();
+        grid[x][y] = 0;
+        break;
+    }
+    
+    color col = color(255);
+    if (grid[x][y] == 1){
+      col = color(0);
+    }
+    int pix = x + y * ant.width;
+    ant.pixels[pix] = col;
+    moveForward();
   }
   ant.updatePixels();
   
   image(ant, 0, 0);
 
 }
-
